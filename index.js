@@ -3,9 +3,12 @@ const app = express();
 require("dotenv").config();
 const port = process.env.port;
 const cors = require("cors");
+const bodyParser = require("body-parser");
 const userRouter = require("./routes/userRouter");
 
 app.use(express.json());
+// Middleware
+app.use(bodyParser.json());
 app.use(
   cors({
     origin: "*", // Allow requests from all origins
