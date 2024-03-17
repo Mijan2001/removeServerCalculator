@@ -15,9 +15,33 @@ app.use(
     credentials: true, // Allow sending cookies
   })
 );
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
+  next();
+});
+
+// CORS middleware to apply headers with conditional origin
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    "https://calculator-with-mongodb-node-express.vercel.app",
+  ];
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", "true");
   next();
 });
 
